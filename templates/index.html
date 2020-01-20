@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> equation-solver-by-diadiushka </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}")>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <script type="text/javascript">
+    	function sendRequest(){
+
+			var equation = document.getElementById('equation');
+			var result = document.getElementById('roots');
+
+	    	var a = +document.getElementById('A').value;
+	    	var b = +document.getElementById('B').value;
+	    	var c = +document.getElementById('C').value;
+	    	
+	    	document.getElementById('A').style.background = "";
+	    	document.getElementById('B').style.background = "";
+	    	document.getElementById('C').style.background = "";
+
+	    	equation.innerHTML = ''
+	    	if((a != 1) && (a != 0) && (a != -1)){
+	    		equation.innerHTML += a + "x<sup>2</sup>";
+	    	} else if (a == 1){
+	    		equation.innerHTML += "x<sup>2</sup>";
+	    	} else if (a == -1){
+	    		equation.innerHTML += "-x<sup>2</sup>";
+	    	}
+	    	if((b != 1) && (b != 0) && (b != -1)){
+	    		if(b > 0){
+	    			if(equation.innerHTML != ''){
+	    				equation.innerHTML += "+";
+	    			}
+	    		}
+	    		equation.innerHTML += b + "x";
+	    	} else if(b == 1){
+	    		if(equation.innerHTML != ''){
+	    			equation.innerHTML += "+";
+	    		}
+	    		equation.innerHTML += "x";
+	    	} else if(b == -1){
+	    		equation.innerHTML += "-x";
+	    	}
+	    	if(c != 0){
+	    		if(c > 0){
+	    			if(equation.innerHTML != ''){
+	    				equation.innerHTML += "+";
+	    			}
+	    		}
+	    		equation.innerHTML += c;
+	    	}
+	    	equation.innerHTML += "=0";
+
+	    	if((isNaN(a) || isNaN(b) || isNaN(c)) || (a == 0)){
+	    		result.innerHTML = "NaN <br> NaN <br> Not a quadratic equation. 'a' shouldn't be zero.";
+	    		if(isNaN(a))
+	    			document.getElementById('A').style.background = "#ff6e6e";
+	    		if(isNaN(b))
+	    			document.getElementById('B').style.background = "#ff6e6e";
+	    		if(isNaN(c))
+	    			document.getElementById('C').style.background = "#ff6e6e";
+	    		return;
+	    	}
+	    	var xhr = new XMLHttpRequest();
+	    	xhr.onreadystatechange = function() {
+	    		if(this.readyState == 4) {
+	    		  result.innerHTML = this.responseText;
+	    		}
+	    	};
+	    	xhr.open('POST', '/request', true);
+	    	xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+	    	var data = "A="  + a + 
+	    			   "&B=" + b +
+	    			   "&C=" + c;
+	    	xhr.send(data);
+		}
+    </script>
+  </head>
+  <body>
+    <h1>equation-solver-by-diadiushka</h1>
+    <h3>ax<sup>2</sup> + bx + c = 0</h3>
+    <div>
+    	<form method="POST">
+    		<input id="A" oninput="sendRequest()" value="2" type="text"> x<sup>2</sup> + 
+    		<input id="B" oninput="sendRequest()" value="5" type="text"> x + 
+    		<input id="C" oninput="sendRequest()" value="-3" type="text"> = 0
+    	</form>
+	</div>
+	<div id="equation">
+		2x<sup>2</sup>+5x-3=0
+	</div>
+	<div>
+		Roots:
+	</div>
+	<div id="roots">
+		This equation has two solutions: -3.0, 0.5
+	</div>
+  </body>
+</html>
