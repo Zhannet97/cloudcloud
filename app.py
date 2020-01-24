@@ -5,7 +5,7 @@ import pymongo
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 
-client = pymongo.MongoClient("mongodb+srv://heroku-app:<password>@cluster0-illmp.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://heroku-app:7653heroku@cluster0-krokl.mongodb.net/test?retryWrites=true&w=majority")
 db = client["mydatabase"]
 col = db["coefficients"]
 
